@@ -22,6 +22,26 @@
 #define THUMBS 30 31 32 33
 
 / {
+  macros {
+    globe_a: globe_a {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings
+        = <&macro_press &kp C_AC_NEXT_KEYBOARD_LAYOUT_SELECT>
+        , <&macro_tap &kp A>
+        , <&macro_release &kp C_AC_NEXT_KEYBOARD_LAYOUT_SELECT>;
+    };
+
+    globe_n: globe_n {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      bindings
+        = <&macro_press &kp C_AC_NEXT_KEYBOARD_LAYOUT_SELECT>
+        , <&macro_tap &kp N>
+        , <&macro_release &kp C_AC_NEXT_KEYBOARD_LAYOUT_SELECT>;
+    };
+  };
+
   keymap {
     compatible = "zmk,keymap";
 
@@ -53,7 +73,7 @@
       label = "RAISE";
       bindings = <
         &kp N1     &kp N2    &kp N3    &kp N4     &kp N5     &kp N6    &kp N7    &kp N8     &kp N9     &kp N0
-        &kp TAB    &kp LALT  &kp LCMD  &kp LCTRL  &kp GLOBE    &kp BSPC  &kp SEMI  &kp SQT    &kp BSLH   &kp EQUAL
+        &kp TAB    &kp LALT  &kp LCMD  &kp LCTRL  &kp C_AC_NEXT_KEYBOARD_LAYOUT_SELECT    &kp BSPC  &kp SEMI  &kp SQT    &kp BSLH   &kp EQUAL
         &kp LSHIFT &kp LG(X) &kp LG(C) &kp LG(V)  &kp LBKT   &kp RBKT  &kp C_PP  &kp C_PREV &kp C_NEXT &kp FSLH
                                        &mo L3     &none      &kp MINUS &kp LSHIFT
       >;
@@ -87,7 +107,7 @@
       bindings = <
         &kp Q     &kp W     &kp E     &kp R     &kp T      &kp Y     &kp U     &kp I     &kp O    &kp P
         &kp A     &kp LALT  &kp LCMD  &kp LCTRL &kp LBKT   &kp H     &kp J     &kp K     &kp L    &kp RET
-        &kp LSHFT &kp X     &kp C     &kp V     &kp B      &kp N     &kp M     &kp COMMA &kp DOT  &kp SLASH
+        &kp LSHFT &kp X     &globe_a  &globe_n  &kp B      &kp N     &kp M     &kp COMMA &kp DOT  &kp SLASH
                                       &none     &kp LSHFT  &kp SPACE &to L0
       >;
     };
