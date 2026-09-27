@@ -108,7 +108,7 @@
         &kp Q     &kp W     &kp E     &kp R     &kp T      &kp Y     &kp U     &kp I     &kp O    &kp P
         &kp A     &kp LALT  &kp LCMD  &kp LCTRL &kp LBKT   &kp H     &kp J     &kp K     &kp L    &kp RET
         &kp LSHFT &kp LA(SPACE) &kp C  &kp V  &kp B      &kp N     &kp M     &kp COMMA &kp DOT  &kp SLASH
-                                      &none     &globe_a  &globe_n &to L0
+                                      &none     &globe_a  &kp SPACE &globe_n
       >;
     };
 
