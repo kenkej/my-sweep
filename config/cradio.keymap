@@ -106,9 +106,9 @@
       label = "HOMEROW";
       bindings = <
         &kp Q     &kp W     &kp E     &kp R     &kp T      &kp Y     &kp U     &kp I     &kp O    &kp P
-        &globe_a  &kp LALT  &kp LCMD  &kp LCTRL &kp LBKT   &kp H     &kp J     &kp K     &kp L    &kp RET
-        &kp LSHFT &kp LA(SPACE) &kp C  &kp V  &kp B      &globe_n     &kp M     &kp COMMA &kp DOT  &kp SLASH
-                                      &none     &kp LSHFT  &kp SPACE &to L0
+        &kp A     &kp LALT  &kp LCMD  &kp LCTRL &kp LBKT   &kp H     &kp J     &kp K     &kp L    &kp RET
+        &kp LSHFT &kp LA(SPACE) &kp C  &kp V  &kp B      &kp N     &kp M     &kp COMMA &kp DOT  &kp SLASH
+                                      &none     &globe_a  &globe_n &to L0
       >;
     };
 
