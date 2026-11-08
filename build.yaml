@@ -20,4 +20,8 @@ include:
   - board: "nice_nano@2.0.0//zmk"
     shield: cradio_right
   - board: "nice_nano@2.0.0//zmk"
+    shield: cradio_right
+    snippet: zmk-usb-logging
+    artifact-name: cradio_right_with_logging
+  - board: "nice_nano@2.0.0//zmk"
     shield: settings_reset
