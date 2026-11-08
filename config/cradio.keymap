@@ -22,10 +22,9 @@
 #define THUMBS 30 31 32 33
 
 &soft_off {
-  hold-time-ms = <3000>;
-  /* Make the peripheral wait for release + hold-time too, instead of
-   * powering off instantly on press. The instant-on-press path races the
-   * USB/BLE logging flush and appears to also skip arming the peripheral's
+  /* Make the peripheral wait for release too, instead of powering off
+   * instantly on press. The instant-on-press path races the USB/BLE
+   * logging flush and appears to also skip arming the peripheral's
    * wakeup-source reliably, which is why the right half needed a hardware
    * reset to wake. Trade-off: if the BLE link drops mid-press, the
    * peripheral may not get the off command at all (see ZMK docs). */
