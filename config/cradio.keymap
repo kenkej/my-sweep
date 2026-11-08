@@ -23,6 +23,13 @@
 
 &soft_off {
   hold-time-ms = <3000>;
+  /* Make the peripheral wait for release + hold-time too, instead of
+   * powering off instantly on press. The instant-on-press path races the
+   * USB/BLE logging flush and appears to also skip arming the peripheral's
+   * wakeup-source reliably, which is why the right half needed a hardware
+   * reset to wake. Trade-off: if the BLE link drops mid-press, the
+   * peripheral may not get the off command at all (see ZMK docs). */
+  /delete-property/ split-peripheral-off-on-press;
 };
 
 / {
