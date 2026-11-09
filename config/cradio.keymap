@@ -102,8 +102,8 @@
       bindings = <
         &kp GRAVE  &bt BT_SEL 0  &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &kp LC(N6) &caps_word &kp LG(TAB)       &kp LG(GRAVE)   &kp ESC
         &kp TAB    &kp LALT      &kp LCMD     &kp LCTRL    &kp LG(N5)   &kp LEFT   &kp DOWN   &kp UP            &kp RIGHT       &mo L7
-        &kp LSHIFT &soft_off     &trans &trans &trans &to L6     &kp C_MUTE &kp C_VOLUME_DOWN &kp C_VOLUME_UP &kp GRAVE
-                                              &mo L3       &mo L1       &kp SPACE  &mo L4
+        &kp LSHIFT &trans     &trans &trans &trans &to L6     &kp C_MUTE &kp C_VOLUME_DOWN &kp C_VOLUME_UP &kp GRAVE
+                                              &mo L3       &mo L1       &kp SPACE  &trans
       >;
     };
 
@@ -118,7 +118,7 @@
         &kp Q     &kp W     &kp E     &kp R     &kp T      &kp Y     &kp U     &kp I     &kp O    &kp P
         &kp A     &kp LALT  &kp LCMD  &kp LCTRL &kp LBKT   &kp H     &kp J     &kp K     &kp L    &kp RET
         &kp LSHFT &kp LA(SPACE) &kp C  &kp V  &kp B      &kp N     &kp M     &kp COMMA &kp DOT  &kp SLASH
-                                      &none     &trans  &kp SPACE &trans
+                                      &none     &trans  &kp SPACE &soft_off
       >;
     };
 
