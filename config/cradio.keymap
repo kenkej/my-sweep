@@ -50,6 +50,76 @@
         , <&macro_tap &kp N>
         , <&macro_release &kp C_AC_NEXT_KEYBOARD_LAYOUT_SELECT>;
     };
+
+    /* Lock the Mac (Ctrl+Cmd+Q), then soft-off both halves. The 500ms wait
+     * after the lock tap gives the HID report time to reach the host over
+     * BLE before the radio powers down. &soft_off is global-locality, so the
+     * peripheral half is powered off too when invoked from this macro.
+     * Triggered by &q_off below, not bound directly. */
+    lock_off: lock_off {
+      compatible = "zmk,behavior-macro";
+      #binding-cells = <0>;
+      wait-ms = <15>;
+      tap-ms = <30>;
+      bindings
+        = <&macro_wait_time 500>
+        , <&macro_tap &kp LC(LG(Q))>
+        , <&macro_tap &soft_off>;
+    };
+
+    /* One-param wrappers around &bt so they fit in a hold-tap (which passes
+     * a single param to each side). ZMK has no "clear profile N" command --
+     * BT_CLR only clears the active profile -- so select N first, then clear. */
+    bt_sel_n: bt_sel_n {
+      compatible = "zmk,behavior-macro-one-param";
+      #binding-cells = <1>;
+      bindings
+        = <&macro_param_1to2>
+        , <&macro_tap &bt BT_SEL_CMD MACRO_PLACEHOLDER>;
+    };
+
+    bt_clr_n: bt_clr_n {
+      compatible = "zmk,behavior-macro-one-param";
+      #binding-cells = <1>;
+      bindings
+        = <&macro_param_1to2>
+        , <&macro_tap &bt BT_SEL_CMD MACRO_PLACEHOLDER>
+        , <&macro_tap &bt BT_CLR>;
+    };
+  };
+
+  behaviors {
+    /* &bt_ht N N: tap selects BT profile N; hold 3s selects and clears it.
+     * tap-preferred so pressing other keys mid-hold never triggers the clear
+     * early -- only the full 3s hold does. */
+    bt_ht: bt_ht {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <2>;
+      flavor = "tap-preferred";
+      tapping-term-ms = <3000>;
+      bindings = <&bt_clr_n>, <&bt_sel_n>;
+    };
+
+    /* Q key that also powers off when pressed as Ctrl+Cmd+Q.
+     * A single mod-morph fires if ANY of its mods is held (so Cmd+Q alone
+     * would trigger it), hence two nested morphs: Ctrl -> Cmd -> &lock_off.
+     * keep-mods stops the outer morph from masking Ctrl out of the report.
+     * Any other combo (plain Q, Cmd+Q, Ctrl+Q, ...) is just &kp Q. */
+    q_cmd_off: q_cmd_off {
+      compatible = "zmk,behavior-mod-morph";
+      #binding-cells = <0>;
+      bindings = <&kp Q>, <&lock_off>;
+      mods = <(MOD_LGUI|MOD_RGUI)>;
+      keep-mods = <(MOD_LGUI|MOD_RGUI)>;
+    };
+
+    q_off: q_off {
+      compatible = "zmk,behavior-mod-morph";
+      #binding-cells = <0>;
+      bindings = <&kp Q>, <&q_cmd_off>;
+      mods = <(MOD_LCTL|MOD_RCTL)>;
+      keep-mods = <(MOD_LCTL|MOD_RCTL)>;
+    };
   };
 
   keymap {
@@ -66,7 +136,7 @@
     layer_0 {
       label = "ALPHA";
       bindings = <
-        &kp Q     &kp W       &kp E       &kp R        &kp T       &kp Y      &kp U        &kp I       &kp O       &kp P
+        &q_off    &kp W       &kp E       &kp R        &kp T       &kp Y      &kp U        &kp I       &kp O       &kp P
         &kp A     &kp S       &kp D       &kp F        &kp G       &kp H      &kp J        &kp K       &kp L       &lt L5 RET
         &kp Z     &kp X       &kp C       &kp V        &kp B       &kp N      &kp M        &kp COMMA   &kp DOT     &kp FSLH
                                           &mo L3       &mo L1      &lt L2 SPACE &mo 4
@@ -100,7 +170,7 @@
     layer_2 {
       label = "LOWER";
       bindings = <
-        &kp GRAVE  &bt BT_SEL 0  &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &kp LC(N6) &caps_word &kp LG(TAB)       &kp LG(GRAVE)   &kp ESC
+        &kp GRAVE  &bt_ht 0 0   &bt_ht 1 1   &bt_ht 2 2   &bt_ht 3 3 &kp LC(N6) &caps_word &kp LG(TAB)       &kp LG(GRAVE)   &kp ESC
         &kp TAB    &kp LALT      &kp LCMD     &kp LCTRL    &kp LG(N5)   &kp LEFT   &kp DOWN   &kp UP            &kp RIGHT       &mo L7
         &kp LSHIFT &trans     &trans &trans &trans &to L6     &kp C_MUTE &kp C_VOLUME_DOWN &kp C_VOLUME_UP &kp GRAVE
                                               &mo L3       &mo L1       &kp SPACE  &soft_off
@@ -115,7 +185,7 @@
     layer_3 {
       label = "HOMEROW";
       bindings = <
-        &kp Q     &kp W     &kp E     &kp R     &kp T      &kp Y     &kp U     &kp I     &kp O    &kp P
+        &q_off    &kp W     &kp E     &kp R     &kp T      &kp Y     &kp U     &kp I     &kp O    &kp P
         &kp A     &kp LALT  &kp LCMD  &kp LCTRL &kp LBKT   &kp H     &kp J     &kp K     &kp L    &kp RET
         &kp LSHFT &kp LA(SPACE) &kp C  &kp V  &kp B      &kp N     &kp M     &kp COMMA &kp DOT  &kp SLASH
                                       &none     &trans  &kp SPACE &trans
@@ -130,7 +200,7 @@
     layer_4 {
       label = "HOMEROW";
       bindings = <
-        &kp Q     &kp W     &kp E     &kp R     &kp T      &kp Y     &kp U     &kp I     &kp O    &kp LBKT
+        &q_off    &kp W     &kp E     &kp R     &kp T      &kp Y     &kp U     &kp I     &kp O    &kp LBKT
         &kp A     &kp S     &kp D     &kp F     &kp G      &kp RBKT  &kp LCTRL &kp LCMD  &kp LALT &kp RET
         &kp Z     &kp X     &kp C     &kp V     &kp B      &kp N     &kp M     &kp COMMA &kp DOT  &kp LSHFT
                                       &kp BSPC  &kp LSHFT  &kp SPACE &to L0
